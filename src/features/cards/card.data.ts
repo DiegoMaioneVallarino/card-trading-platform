@@ -1,0 +1,48 @@
+import type { TradingCard } from "./card.types";
+
+export const cards: TradingCard[] = [
+  {
+    id: "1",
+    name: "Charizard",
+    collection: "Base Set",
+    category: "pokemon",
+    rarity: "Holo Rare",
+    condition: "Near Mint",
+    price: 4500,
+    image: "/images/charizard.png",
+    seller: "CardCollector",
+  },
+  {
+    id: "2",
+    name: "Blue-Eyes White Dragon",
+    collection: "Legend of Blue Eyes",
+    category: "yugioh",
+    rarity: "Ultra Rare",
+    condition: "Excellent",
+    price: 3200,
+    image: "/images/blue-eyes.png",
+    seller: "DuelMaster",
+  },
+  {
+    id: "3",
+    name: "Black Lotus",
+    collection: "Alpha",
+    category: "magic",
+    rarity: "Rare",
+    condition: "Played",
+    price: 125000,
+    image: "/images/black-lotus.png",
+    seller: "VintageCards",
+  },
+  {
+    id: "4",
+    name: "Pikachu",
+    collection: "Celebrations",
+    category: "pokemon",
+    rarity: "Ultra Rare",
+    condition: "Mint",
+    price: 890,
+    image: "/images/pikachu.png",
+    seller: "PokeMarket",
+  },
+];
