@@ -10,6 +10,12 @@ import type {
 import { useListingStore } from "../features/listings/listing.store";
 import { DEMO_SELLER_ID } from "../features/listings/listing.data";
 
+import { ImageUploader } from "../features/listings/components/ImageUploader/ImageUploader";
+import { saveImage, deleteImage } from "../services/imageStorage";
+
+import { cards } from "../features/cards/card.data";
+
+
 import "./SellPage.css";
 
 export function SellPage() {
@@ -32,21 +38,45 @@ export function SellPage() {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+const [files, setFiles] = useState<File[]>([]);
+const [isSaving, setIsSaving] = useState(false);
+const [saveError, setSaveError] = useState("");
 
-    const parsedPrice = Number(price);
-    const parsedQuantity = Number(quantity);
+async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
 
-    if (
-      !name.trim() ||
-      !collection.trim() ||
-      !Number.isFinite(parsedPrice) ||
-      parsedPrice <= 0 ||
-      !Number.isSafeInteger(parsedQuantity) ||
-      parsedQuantity < 1
-    ) {
-      return;
+  if (isSaving) return;
+
+  const parsedPrice = Number(price);
+  const parsedQuantity = Number(quantity);
+
+  if (
+    !name.trim() ||
+    !collection.trim() ||
+    !Number.isFinite(parsedPrice) ||
+    parsedPrice <= 0 ||
+    !Number.isSafeInteger(parsedQuantity) ||
+    parsedQuantity < 1
+  ) {
+    return;
+  }
+
+  setIsSaving(true);
+  setSaveError("");
+
+  const savedKeys: string[] = [];
+
+  try {
+    const images = [];
+
+    for (const file of files) {
+      const storageKey = await saveImage(file);
+      savedKeys.push(storageKey);
+
+      images.push({
+        id: crypto.randomUUID(),
+        storageKey,
+      });
     }
 
     const listing: CardListing = {
@@ -60,6 +90,7 @@ export function SellPage() {
       quantity: parsedQuantity,
       description: description.trim(),
       image: image.trim(),
+      images,
       sellerId: DEMO_SELLER_ID,
       sellerName: "You",
       createdAt: new Date().toISOString(),
@@ -68,7 +99,18 @@ export function SellPage() {
 
     addListing(listing);
     navigate("/my-listings");
+  } catch {
+    await Promise.allSettled(
+      savedKeys.map((key) => deleteImage(key))
+    );
+
+    setSaveError(
+      "Unable to save the photos. Please try again."
+    );
+  } finally {
+    setIsSaving(false);
   }
+}
 
   return (
     <main className="sell-page">
@@ -87,7 +129,33 @@ export function SellPage() {
       >
         <div className="sell-page__section">
           <h2>Card information</h2>
+<label>
+  Select from catalog (optional)
+  <select
+    defaultValue=""
+    onChange={(event) => {
+      const card = cards.find(
+        (item) => item.id === event.target.value
+      );
 
+      if (!card) return;
+
+      setName(card.name);
+      setCollection(card.collection);
+      setCategory(card.category);
+      setRarity(card.rarity);
+      setImage(card.image);
+    }}
+  >
+    <option value="">Select a card...</option>
+
+    {cards.map((card) => (
+      <option key={card.id} value={card.id}>
+        {card.name} — {card.collection}
+      </option>
+    ))}
+  </select>
+</label>
           <label>
             Card name
             <input
@@ -190,7 +258,14 @@ export function SellPage() {
             </label>
           </div>
         </div>
+<div className="sell-page__section">
+  <h2>Card photography</h2>
 
+  <ImageUploader
+    files={files}
+    onChange={setFiles}
+  />
+</div>
         <div className="sell-page__section">
           <h2>Additional details</h2>
 
@@ -217,12 +292,19 @@ export function SellPage() {
           </label>
         </div>
 
-        <button
-          className="sell-page__submit"
-          type="submit"
-        >
-          Publish listing
-        </button>
+       <button
+  className="sell-page__submit"
+  type="submit"
+  disabled={isSaving}
+>
+  {isSaving ? "Publishing..." : "Publish listing"}
+</button>
+
+        {saveError && (
+  <p role="alert" className="image-uploader__error">
+    {saveError}
+  </p>
+)}
       </form>
     </main>
   );

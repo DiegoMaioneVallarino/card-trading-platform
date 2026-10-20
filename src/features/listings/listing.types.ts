@@ -23,5 +23,11 @@ export interface CardListing {
   sellerId: string;
   sellerName: string;
   createdAt: string;
+  images?: ListingImage[];
   status: "active" | "sold" | "draft";
+}
+
+export interface ListingImage {
+  id: string;
+  storageKey: string;
 }

@@ -1,5 +1,6 @@
 import type { CardListing } from "../listing.types";
 import "./ListingCard.css";
+import { ListingImage } from "./ListingImage";
 
 interface ListingCardProps {
   listing: CardListing;
@@ -18,10 +19,7 @@ export function ListingCard({
   return (
     <article className="listing-card">
       <div className="listing-card__image">
-        <img
-          src={listing.image}
-          alt={listing.name}
-        />
+       <ListingImage listing={listing} />
 
         <span className="listing-card__condition">
           {listing.condition}
