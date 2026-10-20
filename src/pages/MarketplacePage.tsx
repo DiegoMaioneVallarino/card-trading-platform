@@ -1,4 +1,7 @@
 import { useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+
+
 import { cards } from "../features/cards/card.data";
 import { CardItem } from "../features/cards/components/CardItem";
 import type { CardCategory } from "../features/cards/card.types";
@@ -22,24 +25,41 @@ export function MarketplacePage() {
     useState<CategoryFilter>("all");
 
   const [sort, setSort] = useState("featured");
+const [searchParams] = useSearchParams();
+const searchQuery = (searchParams.get("q") ?? "")
+  .trim()
+  .toLowerCase();
+const filteredCards = useMemo(() => {
+  const result = cards.filter((card) => {
+    const matchesCategory =
+      category === "all" ||
+      card.category === category;
 
-  const filteredCards = useMemo(() => {
-    const result = cards.filter(
-      (card) =>
-        category === "all" ||
-        card.category === category
+    const searchableText = [
+      card.name,
+      card.collection,
+      card.rarity,
+      card.seller,
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    return (
+      matchesCategory &&
+      searchableText.includes(searchQuery)
     );
+  });
 
-    if (sort === "low") {
-      result.sort((a, b) => a.price - b.price);
-    }
+  if (sort === "low") {
+    result.sort((a, b) => a.price - b.price);
+  }
 
-    if (sort === "high") {
-      result.sort((a, b) => b.price - a.price);
-    }
+  if (sort === "high") {
+    result.sort((a, b) => b.price - a.price);
+  }
 
-    return result;
-  }, [category, sort]);
+  return result;
+}, [category, sort, searchQuery]);
 
   return (
     <main className="marketplace">

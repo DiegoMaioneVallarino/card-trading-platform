@@ -1,0 +1,165 @@
+.card-detail {
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  padding: 36px 48px 100px;
+}
+
+.card-detail__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  color: #777;
+  text-decoration: none;
+}
+
+.card-detail__back:hover {
+  color: #111;
+}
+
+.card-detail__layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 80px;
+  margin-top: 40px;
+}
+
+.card-detail__visual {
+  min-height: 570px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 65px;
+  background: #f5f5f5;
+  border-radius: 16px;
+}
+
+.card-detail__visual img {
+  max-width: 100%;
+  max-height: 530px;
+  object-fit: contain;
+}
+
+.card-detail__info {
+  padding-top: 35px;
+}
+
+.card-detail__eyebrow {
+  font-size: 11px;
+  color: #888;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.card-detail__info h1 {
+  margin: 18px 0 8px;
+  font-size: clamp(36px, 4vw, 58px);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+}
+
+.card-detail__rarity {
+  font-size: 14px;
+  color: #888;
+}
+
+.card-detail__price {
+  margin-top: 35px;
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+
+.card-detail__divider {
+  height: 1px;
+  background: #eaeaea;
+  margin: 32px 0;
+}
+
+.card-detail__specs {
+  display: grid;
+  gap: 22px;
+}
+
+.card-detail__specs > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 13px;
+}
+
+.card-detail__specs span {
+  color: #888;
+}
+
+.card-detail__specs strong {
+  font-weight: 500;
+}
+
+.card-detail__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 45px;
+}
+
+.card-detail__buy {
+  flex: 1;
+  min-height: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #171717;
+  color: white;
+  font-size: 13px;
+}
+
+.card-detail__buy:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.card-detail__favorite {
+  width: 54px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-detail__notice {
+  margin-top: 20px;
+  color: #999;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.card-detail__not-found {
+  padding: 100px 48px;
+  text-align: center;
+}
+
+@media (max-width: 850px) {
+  .card-detail {
+    padding: 25px 20px 70px;
+  }
+
+  .card-detail__layout {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .card-detail__visual {
+    min-height: 350px;
+    padding: 35px;
+  }
+
+  .card-detail__info {
+    padding-top: 10px;
+  }
+}

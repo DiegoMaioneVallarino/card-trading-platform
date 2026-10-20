@@ -1,11 +1,5 @@
-import { Header } from "../components/navigation/Header/Header";
-import { MarketplacePage } from "../pages/MarketplacePage";
+import { AppRouter } from "./AppRouter";
 
 export default function App() {
-  return (
-    <>
-      <Header />
-      <MarketplacePage />
-    </>
-  );
+  return <AppRouter />;
 }

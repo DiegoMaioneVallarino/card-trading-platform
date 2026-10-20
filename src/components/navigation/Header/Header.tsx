@@ -1,5 +1,7 @@
 import { Search, ShoppingBag, UserRound } from "lucide-react";
 import "./Header.css";
+import { Link } from "react-router-dom";
+
 
 export function Header() {
   return (
@@ -16,9 +18,9 @@ export function Header() {
       </nav>
 
       <div className="site-header__actions">
-        <button aria-label="Search">
-          <Search size={19} />
-        </button>
+       <Link to="/marketplace?q=charizard" aria-label="Search Charizard">
+  <Search size={19} />
+</Link>
         <button aria-label="Account">
           <UserRound size={19} />
         </button>
