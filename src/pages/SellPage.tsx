@@ -1,6 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
 import type { CardCategory } from "../features/cards/card.types";
 import type {
   CardCondition,
@@ -20,23 +19,63 @@ import "./SellPage.css";
 
 export function SellPage() {
   const navigate = useNavigate();
+  const { listingId } = useParams<{ listingId: string }>();
+
+const isEditing = Boolean(listingId);
+
+const existingListing = useListingStore((state) =>
+  state.listings.find(
+    (listing) =>
+      listing.id === listingId &&
+      listing.sellerId === DEMO_SELLER_ID
+  )
+);
+
+const updateListing = useListingStore(
+  (state) => state.updateListing
+);
   const addListing = useListingStore(
     (state) => state.addListing
   );
 
-  const [name, setName] = useState("");
-  const [collection, setCollection] = useState("");
-  const [category, setCategory] =
-    useState<CardCategory>("pokemon");
+const [name, setName] = useState(
+  existingListing?.name ?? ""
+);
 
-  const [rarity, setRarity] = useState("");
-  const [condition, setCondition] =
-    useState<CardCondition>("Near Mint");
+const [collection, setCollection] = useState(
+  existingListing?.collection ?? ""
+);
 
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("1");
-  const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
+const [category, setCategory] = useState<CardCategory>(
+  existingListing?.category ?? "pokemon"
+);
+
+const [rarity, setRarity] = useState(
+  existingListing?.rarity ?? ""
+);
+
+const [condition, setCondition] = useState<CardCondition>(
+  existingListing?.condition ?? "Near Mint"
+);
+
+const [price, setPrice] = useState(
+  existingListing?.price.toString() ?? ""
+);
+
+const [quantity, setQuantity] = useState(
+  existingListing?.quantity.toString() ?? "1"
+);
+
+const [description, setDescription] = useState(
+  existingListing?.description ?? ""
+);
+
+const [image, setImage] = useState(
+  existingListing?.image ?? ""
+);
+
+
+
 
 const [files, setFiles] = useState<File[]>([]);
 const [isSaving, setIsSaving] = useState(false);
@@ -61,43 +100,67 @@ async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     return;
   }
 
+  if (isEditing && !existingListing) {
+    setSaveError("Listing not found or access denied.");
+    return;
+  }
+
   setIsSaving(true);
   setSaveError("");
 
   const savedKeys: string[] = [];
 
   try {
-    const images = [];
+    const newImages = [];
 
     for (const file of files) {
       const storageKey = await saveImage(file);
       savedKeys.push(storageKey);
 
-      images.push({
+      newImages.push({
         id: crypto.randomUUID(),
         storageKey,
       });
     }
 
-    const listing: CardListing = {
-      id: crypto.randomUUID(),
-      name: name.trim(),
-      collection: collection.trim(),
-      category,
-      rarity: rarity.trim() || "Unspecified",
-      condition,
-      price: parsedPrice,
-      quantity: parsedQuantity,
-      description: description.trim(),
-      image: image.trim(),
-      images,
-      sellerId: DEMO_SELLER_ID,
-      sellerName: "You",
-      createdAt: new Date().toISOString(),
-      status: "active",
-    };
+    if (isEditing && existingListing) {
+      updateListing(existingListing.id, {
+        name: name.trim(),
+        collection: collection.trim(),
+        category,
+        rarity: rarity.trim() || "Unspecified",
+        condition,
+        price: parsedPrice,
+        quantity: parsedQuantity,
+        description: description.trim(),
+        image: image.trim(),
+        images: [
+          ...(existingListing.images ?? []),
+          ...newImages,
+        ],
+      });
+    } else {
+      const listing: CardListing = {
+        id: crypto.randomUUID(),
+        name: name.trim(),
+        collection: collection.trim(),
+        category,
+        rarity: rarity.trim() || "Unspecified",
+        condition,
+        price: parsedPrice,
+        quantity: parsedQuantity,
+        description: description.trim(),
+        image: image.trim(),
+        images: newImages,
+        sellerId: DEMO_SELLER_ID,
+        sellerName: "You",
+        createdAt: new Date().toISOString(),
+        status: "active",
+      };
 
-    addListing(listing);
+      addListing(listing);
+    }
+
     navigate("/my-listings");
   } catch {
     await Promise.allSettled(
@@ -105,19 +168,37 @@ async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     );
 
     setSaveError(
-      "Unable to save the photos. Please try again."
+      "Unable to save the listing. Please try again."
     );
   } finally {
     setIsSaving(false);
   }
 }
+if (isEditing && !existingListing) {
+  return (
+    <main className="sell-page">
+      <h1>Listing not found</h1>
 
+      <p>
+        This listing does not exist or cannot be edited.
+      </p>
+
+      <button
+        type="button"
+        onClick={() => navigate("/my-listings")}
+      >
+        Back to my listings
+      </button>
+    </main>
+  );
+}
   return (
     <main className="sell-page">
       <div className="sell-page__intro">
         <span>SELL ON CARDMARKET</span>
-        <h1>List your card.</h1>
-        <p>
+<h1>
+  {isEditing ? "Edit your listing." : "List your card."}
+</h1>        <p>
           Share your collectibles with the community.
           Create a listing in just a few steps.
         </p>
@@ -292,12 +373,16 @@ async function handleSubmit(event: FormEvent<HTMLFormElement>) {
           </label>
         </div>
 
-       <button
+<button
   className="sell-page__submit"
   type="submit"
   disabled={isSaving}
 >
-  {isSaving ? "Publishing..." : "Publish listing"}
+  {isSaving
+    ? "Saving..."
+    : isEditing
+      ? "Save changes"
+      : "Publish listing"}
 </button>
 
         {saveError && (

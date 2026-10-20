@@ -1,7 +1,7 @@
 import type { CardListing } from "../listing.types";
 import "./ListingCard.css";
 import { ListingImage } from "./ListingImage";
-
+import { Link } from "react-router-dom";
 interface ListingCardProps {
   listing: CardListing;
   onDelete?: (id: string) => void;
@@ -45,13 +45,19 @@ export function ListingCard({
           </div>
 
           {onDelete && (
-            <button
-              type="button"
-              onClick={() => onDelete(listing.id)}
-            >
-              Remove
-            </button>
-          )}
+  <div className="listing-card__actions">
+    <Link to={`/my-listings/${listing.id}/edit`}>
+      Edit
+    </Link>
+
+    <button
+      type="button"
+      onClick={() => onDelete(listing.id)}
+    >
+      Remove
+    </button>
+  </div>
+)}
         </div>
       </div>
     </article>

@@ -31,6 +31,10 @@ export function AppRouter() {
             element={<MyListingsPage />}
             />
         </Route>
+        <Route
+  path="/my-listings/:listingId/edit"
+  element={<SellPage />}
+/>
       </Routes>
     </BrowserRouter>
   );
