@@ -17,7 +17,8 @@ export function Header() {
         </Link>
 
         <nav className="site-header__nav">
-          <Link to="/">Discover</Link>
+<Link to="/sell">Sell a Card</Link>
+<Link to="/my-listings">My Listings</Link>          <Link to="/">Discover</Link>
           <Link to="/marketplace">Marketplace</Link>
           <Link to="/collections">Collections</Link>
           <Link to="/trading">Trading</Link>

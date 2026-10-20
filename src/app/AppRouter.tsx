@@ -7,6 +7,9 @@ import {
 import { MainLayout } from "./layouts/MainLayout";
 import { MarketplacePage } from "../pages/MarketplacePage";
 import { CardDetailPage } from "../pages/CardDetailPage";
+import { SellPage } from "../pages/SellPage";
+import { MyListingsPage } from "../pages/MyListingsPage";
+
 
 export function AppRouter() {
   return (
@@ -22,6 +25,11 @@ export function AppRouter() {
             path="/cards/:cardId"
             element={<CardDetailPage />}
           />
+          <Route path="/sell" element={<SellPage />} />
+            <Route
+            path="/my-listings"
+            element={<MyListingsPage />}
+            />
         </Route>
       </Routes>
     </BrowserRouter>

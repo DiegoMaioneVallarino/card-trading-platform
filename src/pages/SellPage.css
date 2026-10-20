@@ -1,0 +1,110 @@
+.sell-page {
+  width: min(760px, 100%);
+  margin: 0 auto;
+  padding: 80px 24px 120px;
+}
+
+.sell-page__intro {
+  margin-bottom: 55px;
+}
+
+.sell-page__intro > span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  color: #999;
+}
+
+.sell-page__intro h1 {
+  margin: 18px 0;
+  font-size: clamp(40px, 5vw, 64px);
+  letter-spacing: -0.055em;
+  font-weight: 600;
+}
+
+.sell-page__intro p {
+  max-width: 480px;
+  color: #888;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.sell-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+}
+
+.sell-page__section {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-bottom: 35px;
+  border-bottom: 1px solid #eee;
+}
+
+.sell-page__section h2 {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin: 0 0 8px;
+}
+
+.sell-page__form label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.sell-page__form input,
+.sell-page__form select,
+.sell-page__form textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #222;
+  font-size: 13px;
+  outline: none;
+}
+
+.sell-page__form input:focus,
+.sell-page__form select:focus,
+.sell-page__form textarea:focus {
+  border-color: #777;
+  background: white;
+}
+
+.sell-page__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.sell-page__submit {
+  min-height: 56px;
+  border: none;
+  border-radius: 8px;
+  background: #171717;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sell-page__submit:hover {
+  background: #333;
+}
+
+@media (max-width: 600px) {
+  .sell-page {
+    padding-top: 50px;
+  }
+
+  .sell-page__row {
+    grid-template-columns: 1fr;
+  }
+}

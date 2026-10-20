@@ -6,7 +6,8 @@ import { cards } from "../features/cards/card.data";
 import { CardItem } from "../features/cards/components/CardItem";
 import type { CardCategory } from "../features/cards/card.types";
 import "./MarketplacePage.css";
-
+import { useListingStore } from "../features/listings/listing.store";
+import { ListingCard } from "../features/listings/components/ListingCard";
 type CategoryFilter = "all" | CardCategory;
 
 const categories: {
@@ -60,6 +61,41 @@ const filteredCards = useMemo(() => {
 
   return result;
 }, [category, sort, searchQuery]);
+
+
+const listings = useListingStore(
+  (state) => state.listings
+);
+
+const activeListings = useMemo(() => {
+  return listings
+    .filter((listing) => {
+      const matchesCategory =
+        category === "all" ||
+        listing.category === category;
+
+      const matchesSearch = [
+        listing.name,
+        listing.collection,
+        listing.rarity,
+        listing.sellerName,
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(searchQuery);
+
+      return (
+        listing.status === "active" &&
+        matchesCategory &&
+        matchesSearch
+      );
+    })
+    .sort((a, b) => {
+      if (sort === "low") return a.price - b.price;
+      if (sort === "high") return b.price - a.price;
+      return 0;
+    });
+}, [listings, category, searchQuery, sort]);
 
   return (
     <main className="marketplace">
@@ -141,6 +177,38 @@ const filteredCards = useMemo(() => {
           </p>
         )}
       </section>
+      <section className="marketplace__catalog">
+  <div className="marketplace__heading">
+    <div>
+      <span className="marketplace__eyebrow">
+        COMMUNITY
+      </span>
+      <h2>Collector listings</h2>
+    </div>
+
+    <span className="marketplace__count">
+      {activeListings.length} listings
+    </span>
+  </div>
+
+  {activeListings.length > 0 ? (
+    <div
+      className="marketplace__grid"
+      style={{ marginTop: 35 }}
+    >
+      {activeListings.map((listing) => (
+        <ListingCard
+          key={listing.id}
+          listing={listing}
+        />
+      ))}
+    </div>
+  ) : (
+    <p className="marketplace__empty">
+      No listings match your filters.
+    </p>
+  )}
+</section>
     </main>
   );
 }
