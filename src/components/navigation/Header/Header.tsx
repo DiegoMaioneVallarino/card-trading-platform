@@ -1,33 +1,51 @@
+import { useState } from "react";
 import { Search, ShoppingBag, UserRound } from "lucide-react";
-import "./Header.css";
 import { Link } from "react-router-dom";
 
+import { SearchPanel } from "../../../features/marketplace/components/SearchPanel/SearchPanel";
+
+import "./Header.css";
 
 export function Header() {
+  const [searchOpen, setSearchOpen] = useState(false);
+
   return (
-    <header className="site-header">
-      <a className="site-header__logo" href="/">
-        CARD<span>MARKET</span>
-      </a>
+    <>
+      <header className="site-header">
+        <Link className="site-header__logo" to="/">
+          CARD<span>MARKET</span>
+        </Link>
 
-      <nav className="site-header__nav">
-        <a href="/">Discover</a>
-        <a href="/marketplace">Marketplace</a>
-        <a href="/collections">Collections</a>
-        <a href="/trading">Trading</a>
-      </nav>
+        <nav className="site-header__nav">
+          <Link to="/">Discover</Link>
+          <Link to="/marketplace">Marketplace</Link>
+          <Link to="/collections">Collections</Link>
+          <Link to="/trading">Trading</Link>
+        </nav>
 
-      <div className="site-header__actions">
-       <Link to="/marketplace?q=charizard" aria-label="Search Charizard">
-  <Search size={19} />
-</Link>
-        <button aria-label="Account">
-          <UserRound size={19} />
-        </button>
-        <button aria-label="Shopping bag">
-          <ShoppingBag size={19} />
-        </button>
-      </div>
-    </header>
+        <div className="site-header__actions">
+          <button
+            type="button"
+            aria-label="Search cards"
+            onClick={() => setSearchOpen(true)}
+          >
+            <Search size={19} />
+          </button>
+
+          <button type="button" aria-label="Account">
+            <UserRound size={19} />
+          </button>
+
+          <button type="button" aria-label="Shopping bag">
+            <ShoppingBag size={19} />
+          </button>
+        </div>
+      </header>
+
+      <SearchPanel
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+      />
+    </>
   );
 }
