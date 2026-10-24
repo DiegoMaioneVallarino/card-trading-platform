@@ -10,6 +10,8 @@ import { CardDetailPage } from "../pages/CardDetailPage";
 import { SellPage } from "../pages/SellPage";
 import { MyListingsPage } from "../pages/MyListingsPage";
 
+import { ListingDetailPage } from "../pages/ListingDetailPage";
+
 
 export function AppRouter() {
   return (
@@ -34,6 +36,9 @@ export function AppRouter() {
         <Route
   path="/my-listings/:listingId/edit"
   element={<SellPage />}
+/><Route
+  path="/listings/:listingId"
+  element={<ListingDetailPage />}
 />
       </Routes>
     </BrowserRouter>

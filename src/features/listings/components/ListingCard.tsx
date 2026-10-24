@@ -18,8 +18,14 @@ export function ListingCard({
 
   return (
     <article className="listing-card">
-      <div className="listing-card__image">
-       <ListingImage listing={listing} />
+     <div className="listing-card__image">
+  <Link
+    to={`/listings/${listing.id}`}
+    className="listing-card__image-link"
+    aria-label={`View ${listing.name}`}
+  >
+    <ListingImage listing={listing} />
+  </Link>
 
         <span className="listing-card__condition">
           {listing.condition}
@@ -31,8 +37,12 @@ export function ListingCard({
           {listing.collection}
         </span>
 
-        <h3>{listing.name}</h3>
-
+<Link
+  to={`/listings/${listing.id}`}
+  className="listing-card__title"
+>
+  <h3>{listing.name}</h3>
+</Link>
         <div className="listing-card__metadata">
           <span>{listing.rarity}</span>
           <span>Qty: {listing.quantity}</span>
