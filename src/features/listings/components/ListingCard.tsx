@@ -2,6 +2,9 @@ import type { CardListing } from "../listing.types";
 import "./ListingCard.css";
 import { ListingImage } from "./ListingImage";
 import { Link } from "react-router-dom";
+import { ShoppingBag } from "lucide-react";
+import { useCartStore } from "../../cart/cart.store";
+import { DEMO_SELLER_ID } from "../listing.data";
 interface ListingCardProps {
   listing: CardListing;
   onDelete?: (id: string) => void;
@@ -11,6 +14,7 @@ export function ListingCard({
   listing,
   onDelete,
 }: ListingCardProps) {
+  const addToCart = useCartStore((state) => state.addItem);
   const price = new Intl.NumberFormat("es-MX", {
     style: "currency",
     currency: "MXN",
@@ -54,6 +58,7 @@ export function ListingCard({
             <span>{listing.sellerName}</span>
           </div>
 
+          {!onDelete && listing.sellerId !== DEMO_SELLER_ID && <button className="listing-card__add" type="button" aria-label={`Add ${listing.name} to bag`} onClick={() => addToCart(listing.id, listing.quantity)}><ShoppingBag size={16} /></button>}
           {onDelete && (
   <div className="listing-card__actions">
     <Link to={`/my-listings/${listing.id}/edit`}>

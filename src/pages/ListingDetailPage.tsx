@@ -1,4 +1,6 @@
 import { Link, useParams } from "react-router-dom";
+import { useCartStore } from "../features/cart/cart.store";
+import { useState } from "react";
 import {
   ArrowLeft,
   Heart,
@@ -21,6 +23,8 @@ const formatPrice = (value: number) =>
 
 export function ListingDetailPage() {
   const { listingId } = useParams<{ listingId: string }>();
+  const addToCart = useCartStore((state) => state.addItem);
+  const [added, setAdded] = useState(false);
 
   const listing = useListingStore((state) =>
     state.listings.find(
@@ -105,11 +109,11 @@ export function ListingDetailPage() {
                 <button
                   type="button"
                   className="listing-detail__buy"
-                  disabled
-                  title="Checkout coming soon"
+                  disabled={listing.quantity < 1}
+                  onClick={() => { addToCart(listing.id, listing.quantity); setAdded(true); }}
                 >
                   <ShoppingBag size={18} />
-                  Add to bag — Coming soon
+                  {added ? "Added to bag ✓" : "Add to bag"}
                 </button>
 
                 <button
@@ -124,6 +128,8 @@ export function ListingDetailPage() {
               </>
             )}
           </div>
+
+          {!isOwner && added && <Link to="/cart" className="client-text-button">View shopping bag →</Link>}
 
           {!isOwner && (
             <button

@@ -57,3 +57,4 @@
     display: none;
   }
 }
+.site-header__actions{align-items:center}.site-header__actions a{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:#222;position:relative}.header-cart-count{position:absolute;right:-9px;top:-9px;background:#191919;color:#fff;border-radius:20px;min-width:17px;height:17px;display:flex;justify-content:center;align-items:center;font-size:10px;padding:0 3px}.site-header__nav a.active{color:#111;font-weight:600}.site-header__actions .header-menu-button{display:none}.header-mobile-nav{display:none}@media(max-width:1000px){.site-header__nav{gap:16px}}@media(max-width:850px){.site-header__actions{gap:14px}.site-header__actions .header-menu-button{display:flex}.header-mobile-nav{display:flex;flex-direction:column;padding:15px 20px;border-bottom:1px solid #eee;background:white}.header-mobile-nav a{padding:12px 0;text-decoration:none;font-size:13px;color:#444}}

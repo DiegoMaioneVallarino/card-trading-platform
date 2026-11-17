@@ -134,3 +134,4 @@
 .listing-card__title:hover {
   text-decoration: underline;
 }
+.listing-card__add{border:1px solid #ddd;background:#fff;border-radius:8px;width:39px;height:39px;display:flex;align-items:center;justify-content:center;cursor:pointer}.listing-card__add:hover{background:#f5f5f5}
