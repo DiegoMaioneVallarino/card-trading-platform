@@ -1,0 +1,28 @@
+import { useMemo, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { ArrowLeft, ArrowUpRight, Bookmark, Check, Layers3, Search } from "lucide-react";
+import { useCollectionStore } from "../features/collections/collection.store";
+import { useListingStore } from "../features/listings/listing.store";
+import { useWishlistStore } from "../features/collections/wishlist.store";
+import { buildExplorer, cardKey } from "../features/collections/explorer";
+import type { CardCategory } from "../features/cards/card.types";
+import "./collectionsExplorer.css";
+const categoryLabels:Record<CardCategory,string>={pokemon:"Pokémon",yugioh:"Yu-Gi-Oh!",magic:"Magic: The Gathering",sports:"Sports"};
+export function CollectionsExplorerPage(){
+ const {setId}=useParams();const owned=useCollectionStore(s=>s.items);const listings=useListingStore(s=>s.listings);const wish=useWishlistStore(s=>s.keys);const toggle=useWishlistStore(s=>s.toggle);
+ const [query,setQuery]=useState("");const [category,setCategory]=useState("all");const [onlyMissing,setOnlyMissing]=useState(false);
+ const sets=useMemo(()=>buildExplorer(owned,listings),[owned,listings]);
+ const active=sets.find(s=>encodeURIComponent(s.id)===setId || s.id===setId);
+ const ownedKeys=useMemo(()=>new Set(owned.filter(o=>o.quantity>0).map(o=>cardKey(o.category,o.collection,o.name))),[owned]);
+ const filteredSets=sets.filter(s=>(category==="all"||s.category===category)&&`${s.name} ${categoryLabels[s.category]} ${s.cards.map(c=>c.name).join(" ")}`.toLowerCase().includes(query.toLowerCase()));
+ const filteredCards=active?.cards.filter(c=>(!onlyMissing||!ownedKeys.has(c.key))&&`${c.name} ${c.rarity}`.toLowerCase().includes(query.toLowerCase()))??[];
+ const total=sets.reduce((n,s)=>n+s.total,0),collected=sets.reduce((n,s)=>n+s.owned,0);
+ return <main className="explorer-page">
+ <div className="explorer-hero"><p className="explorer-eyebrow">THE COLLECTOR'S INDEX</p><h1>{active?active.name:"Explore collections"}<span>.</span></h1><p>{active?`${categoryLabels[active.category]} · ${active.total} indexed cards`:"Browse sets, track your progress and save the cards you're looking for."}</p><div className="explorer-actions"><Link to="/my-collection" className="explorer-primary">My collection <ArrowUpRight size={16}/></Link>{active&&<Link to="/collections" className="explorer-secondary"><ArrowLeft size={16}/> All sets</Link>}</div></div>
+ {!active&&<div className="explorer-stats"><div><span>INDEXED SETS</span><strong>{sets.length}</strong></div><div><span>INDEXED CARDS</span><strong>{total}</strong></div><div><span>CARDS OWNED</span><strong>{collected}</strong></div><div><span>WISHLIST</span><strong>{wish.length}</strong></div></div>}
+ <div className="explorer-toolbar"><label className="explorer-search"><Search size={18}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder={active?"Search cards in this set...":"Search sets and cards..."}/></label>{active?<label className="explorer-check"><input type="checkbox" checked={onlyMissing} onChange={e=>setOnlyMissing(e.target.checked)}/> Missing only</label>:<select value={category} onChange={e=>setCategory(e.target.value)} aria-label="Filter by category"><option value="all">All categories</option>{Object.entries(categoryLabels).map(([k,v])=><option key={k} value={k}>{v}</option>)}</select>}</div>
+ {active?<><div className="explorer-set-summary"><div><strong>{active.owned} / {active.total}</strong><span>Known cards collected</span></div><div className="explorer-progress"><div style={{width:`${active.total?active.owned/active.total*100:0}%`}}/></div><b>{Math.round(active.total?active.owned/active.total*100:0)}%</b></div><div className="explorer-cards">{filteredCards.map(c=>{const has=ownedKeys.has(c.key),wanted=wish.includes(c.key);return <article className="explorer-card" key={c.key}><div className="explorer-card-art">{c.image?<img src={c.image} alt={c.name}/>:<Layers3 size={40}/>}<span className={has?"is-owned":""}>{has?<><Check size={13}/> Owned</>:"Missing"}</span></div><div className="explorer-card-content"><small>{c.rarity}</small><h3>{c.name}</h3><p>Reference price: {new Intl.NumberFormat("es-MX",{style:"currency",currency:"MXN"}).format(c.price)}</p><button className={wanted?"explorer-wish active":"explorer-wish"} onClick={()=>toggle(c.key)}><Bookmark size={16} fill={wanted?"currentColor":"none"}/>{wanted?"Remove from wishlist":"Add to wishlist"}</button>{c.cardId&&<Link to={`/cards/${c.cardId}`}>View card <ArrowUpRight size={14}/></Link>}</div></article>})}</div>{!filteredCards.length&&<p className="explorer-empty">No cards match your filters.</p>}</>:<div className="explorer-set-grid">{filteredSets.map(s=><Link className="explorer-set-card" to={`/collections/${encodeURIComponent(s.id)}`} key={s.id}><div className="explorer-set-art">{s.cards.slice(0,3).map(c=>c.image?<img src={c.image} alt="" key={c.key}/>:<div key={c.key}><Layers3/></div>)}</div><div className="explorer-set-info"><small>{categoryLabels[s.category]}</small><h2>{s.name}</h2><p>{s.total} indexed {s.total===1?"card":"cards"} · {s.owned} owned</p><div className="explorer-progress"><div style={{width:`${s.total?s.owned/s.total*100:0}%`}}/></div><span>{Math.round(s.total?s.owned/s.total*100:0)}% complete <ArrowUpRight size={15}/></span></div></Link>)}</div>}
+ {!active&&!filteredSets.length&&<p className="explorer-empty">No sets match your search.</p>}
+ <p className="explorer-disclaimer">Progress is measured against cards indexed in this local demo, not the complete official checklist for each set. Wishlist and collection data are saved in this browser. Reference prices are sample data, not live market quotes.</p>
+ </main>;
+}

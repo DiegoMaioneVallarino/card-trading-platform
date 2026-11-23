@@ -1,3 +1,4 @@
+import { CollectionsExplorerPage } from "../pages/CollectionsExplorerPage";
 import { MessagesPage } from "../pages/MessagesPage";
 import { NotificationsPage } from "../pages/NotificationsPage";
 import { DashboardPage } from "../pages/DashboardPage";
@@ -30,7 +31,8 @@ export function AppRouter() {
   <Route path="/my-listings/:listingId/edit" element={<SellPage />} />
   <Route path="/listings/:listingId" element={<ListingDetailPage />} />
   <Route path="/profile" element={<ProfilePage />} />
-  <Route path="/collections" element={<CollectionPage />} />
+  <Route path="/collections" element={<CollectionsExplorerPage />} />
+  <Route path="/collections/:setId" element={<CollectionsExplorerPage />} />
   <Route path="/my-collection" element={<CollectionPage />} />
   <Route path="/trading" element={<TradingPage />} />
   <Route path="/favorites" element={<FavoritesPage />} />
