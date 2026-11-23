@@ -1,3 +1,4 @@
+import { TradingPage } from "../pages/TradingPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MainLayout } from "./layouts/MainLayout";
 import { MarketplacePage } from "../pages/MarketplacePage";
@@ -24,6 +25,7 @@ export function AppRouter() {
   <Route path="/profile" element={<ProfilePage />} />
   <Route path="/collections" element={<CollectionPage />} />
   <Route path="/my-collection" element={<CollectionPage />} />
+  <Route path="/trading" element={<TradingPage />} />
   <Route path="/favorites" element={<FavoritesPage />} />
   <Route path="/cart" element={<CartPage />} />
   <Route path="/checkout" element={<CheckoutPage />} />
