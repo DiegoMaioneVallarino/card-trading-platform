@@ -30,7 +30,7 @@ export function MyListingsPage() {
     <main className="my-listings">
       <div className="my-listings__header">
         <div>
-          <span>SELLER DASHBOARD</span>
+          <Link to="/seller/dashboard" style={{fontSize:12,color:"#777"}}>← Seller dashboard</Link>
           <h1>My listings</h1>
           <p>Manage your cards for sale.</p>
         </div>

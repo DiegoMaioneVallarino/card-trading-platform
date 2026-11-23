@@ -1,3 +1,4 @@
+import { DashboardPage } from "../pages/DashboardPage";
 import { HomePage } from "../pages/HomePage";
 import { DiscoverPage } from "../pages/DiscoverPage";
 import { TradingPage } from "../pages/TradingPage";
@@ -23,6 +24,7 @@ export function AppRouter() {
   <Route path="/cards/:cardId" element={<CardDetailPage />} />
   <Route path="/sell" element={<SellPage />} />
   <Route path="/my-listings" element={<MyListingsPage />} />
+  <Route path="/seller/dashboard" element={<DashboardPage />} />
   <Route path="/my-listings/:listingId/edit" element={<SellPage />} />
   <Route path="/listings/:listingId" element={<ListingDetailPage />} />
   <Route path="/profile" element={<ProfilePage />} />
