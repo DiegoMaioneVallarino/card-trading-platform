@@ -96,7 +96,7 @@ export function ListingDetailPage() {
 
             <div>
               <span>Seller</span>
-              <strong>{listing.sellerName}</strong>
+              <strong><Link to={`/collectors/${encodeURIComponent(listing.sellerId)}`}>{listing.sellerName}</Link></strong>
             </div>
           </div>
 
@@ -152,7 +152,7 @@ export function ListingDetailPage() {
             </div>
 
             <div>
-              <strong>{listing.sellerName}</strong>
+              <strong><Link to={`/collectors/${encodeURIComponent(listing.sellerId)}`}>{listing.sellerName}</Link></strong>
               <span>Independent collector</span>
             </div>
           </div>
