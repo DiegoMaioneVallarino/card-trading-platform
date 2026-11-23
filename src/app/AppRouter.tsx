@@ -1,3 +1,5 @@
+import { HomePage } from "../pages/HomePage";
+import { DiscoverPage } from "../pages/DiscoverPage";
 import { TradingPage } from "../pages/TradingPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { MainLayout } from "./layouts/MainLayout";
@@ -15,7 +17,8 @@ import { OrdersPage } from "../pages/OrdersPage";
 import { FavoritesPage } from "../pages/FavoritesPage";
 export function AppRouter() {
  return <BrowserRouter><Routes><Route element={<MainLayout />}>
-  <Route path="/" element={<MarketplacePage />} />
+  <Route path="/" element={<HomePage />} />
+  <Route path="/discover" element={<DiscoverPage />} />
   <Route path="/marketplace" element={<MarketplacePage />} />
   <Route path="/cards/:cardId" element={<CardDetailPage />} />
   <Route path="/sell" element={<SellPage />} />
