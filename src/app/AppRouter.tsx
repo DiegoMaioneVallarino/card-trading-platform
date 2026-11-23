@@ -1,3 +1,4 @@
+import { CatalogPage } from "../pages/CatalogPage";
 import { PublicCollectorsPage } from "../pages/PublicCollectorsPage";
 import { PublicCollectorProfilePage } from "../pages/PublicCollectorProfilePage";
 import { CollectionsExplorerPage } from "../pages/CollectionsExplorerPage";
@@ -24,6 +25,8 @@ import { FavoritesPage } from "../pages/FavoritesPage";
 export function AppRouter() {
  return <BrowserRouter><Routes><Route element={<MainLayout />}>
   <Route path="/" element={<HomePage />} />
+  <Route path="/catalog" element={<CatalogPage />} />
+  <Route path="/catalog/:entryId" element={<CatalogPage />} />
   <Route path="/discover" element={<DiscoverPage />} />
   <Route path="/marketplace" element={<MarketplacePage />} />
   <Route path="/cards/:cardId" element={<CardDetailPage />} />
