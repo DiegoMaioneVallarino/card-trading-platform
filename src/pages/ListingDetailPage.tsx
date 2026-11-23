@@ -1,4 +1,6 @@
 import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useMessagingStore } from "../features/messaging.store";
 import { useCartStore } from "../features/cart/cart.store";
 import { useState } from "react";
 import {
@@ -23,6 +25,8 @@ const formatPrice = (value: number) =>
 
 export function ListingDetailPage() {
   const { listingId } = useParams<{ listingId: string }>();
+  const navigate = useNavigate();
+  const openThread = useMessagingStore(s=>s.openThread);
   const addToCart = useCartStore((state) => state.addItem);
   const [added, setAdded] = useState(false);
 
@@ -135,11 +139,10 @@ export function ListingDetailPage() {
             <button
               className="listing-detail__contact"
               type="button"
-              disabled
-              title="Messaging coming soon"
+              onClick={() => navigate(`/messages/${openThread(listing.sellerId, listing.sellerName, `Listing: ${listing.name}`)}`)}
             >
               <MessageCircle size={17} />
-              Contact seller — Coming soon
+              Contact seller
             </button>
           )}
 

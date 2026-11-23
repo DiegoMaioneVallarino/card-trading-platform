@@ -1,3 +1,5 @@
+import { MessagesPage } from "../pages/MessagesPage";
+import { NotificationsPage } from "../pages/NotificationsPage";
 import { DashboardPage } from "../pages/DashboardPage";
 import { HomePage } from "../pages/HomePage";
 import { DiscoverPage } from "../pages/DiscoverPage";
@@ -35,6 +37,9 @@ export function AppRouter() {
   <Route path="/cart" element={<CartPage />} />
   <Route path="/checkout" element={<CheckoutPage />} />
   <Route path="/order-confirmation/:orderId" element={<OrderConfirmationPage />} />
+  <Route path="/messages" element={<MessagesPage />} />
+  <Route path="/messages/:threadId" element={<MessagesPage />} />
+  <Route path="/notifications" element={<NotificationsPage />} />
   <Route path="/orders" element={<OrdersPage />} />
  </Route></Routes></BrowserRouter>;
 }
