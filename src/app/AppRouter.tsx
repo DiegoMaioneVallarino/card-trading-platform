@@ -1,4 +1,3 @@
-import { CatalogPage } from "../pages/CatalogPage";
 import { PublicCollectorsPage } from "../pages/PublicCollectorsPage";
 import { PublicCollectorProfilePage } from "../pages/PublicCollectorProfilePage";
 import { CollectionsExplorerPage } from "../pages/CollectionsExplorerPage";
@@ -22,11 +21,13 @@ import { CheckoutPage } from "../pages/CheckoutPage";
 import { OrderConfirmationPage } from "../pages/OrderConfirmationPage";
 import { OrdersPage } from "../pages/OrdersPage";
 import { FavoritesPage } from "../pages/FavoritesPage";
+import { PriceComparatorPage } from "../pages/PriceComparatorPage";
+import { DigitalBindersPage } from "../pages/DigitalBindersPage";
+import { GradingCenterPage } from "../pages/GradingCenterPage";
+import { MarketIntelligencePage } from "../pages/MarketIntelligencePage";
 export function AppRouter() {
  return <BrowserRouter><Routes><Route element={<MainLayout />}>
   <Route path="/" element={<HomePage />} />
-  <Route path="/catalog" element={<CatalogPage />} />
-  <Route path="/catalog/:entryId" element={<CatalogPage />} />
   <Route path="/discover" element={<DiscoverPage />} />
   <Route path="/marketplace" element={<MarketplacePage />} />
   <Route path="/cards/:cardId" element={<CardDetailPage />} />
@@ -50,5 +51,9 @@ export function AppRouter() {
   <Route path="/messages/:threadId" element={<MessagesPage />} />
   <Route path="/notifications" element={<NotificationsPage />} />
   <Route path="/orders" element={<OrdersPage />} />
+  <Route path="/price-comparator" element={<PriceComparatorPage />} />
+  <Route path="/binders" element={<DigitalBindersPage />} />
+  <Route path="/grading" element={<GradingCenterPage />} />
+  <Route path="/market-intelligence" element={<MarketIntelligencePage />} />
  </Route></Routes></BrowserRouter>;
 }
